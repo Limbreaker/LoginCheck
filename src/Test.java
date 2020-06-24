@@ -2,19 +2,13 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.net.*;
 import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.List;
 
 
 public class Test {
@@ -31,6 +25,8 @@ public class Test {
 
         //Read File
         File file = new File("notes3.txt");
+
+        ArrayList<String> ListAll = new ArrayList<>();
 
         ArrayList<String> ListThread1 = new ArrayList<>();
         ArrayList<String> ListThread2 = new ArrayList<>();
@@ -55,74 +51,81 @@ public class Test {
         FileReader fr = new FileReader(file);
         BufferedReader reader = new BufferedReader(fr);
         String line = reader.readLine();
+        while (line != null) {
+            ListAll.add(line);
+            line = reader.readLine();
+        }
+        int lenList = ListAll.size();
+        System.out.println(lenList);
 
         //Разделение файла на 2 списка
+
+        int countList1 = lenList % 20;
+        int countList = (lenList - countList1) / 20;
+        System.out.println(countList);
         int count = 0;
-        while (line != null) {
+        for (int i = 0; i < lenList; i++){
             count += 1;
-            if(count <= 500) {
-                ListThread1.add(line);
+            if(count <= countList) {
+                ListThread1.add(ListAll.get(i));
             }
-            else if(count > 500 & count <=1000) {
-                ListThread2.add(line);
+            else if(count > countList & count <=2*countList) {
+                ListThread2.add(ListAll.get(i));
             }
-            else if(count > 1000 & count <= 1500){
-                ListThread3.add(line);
+            else if(count > 2*countList & count <= 3*countList){
+                ListThread3.add(ListAll.get(i));
             }
-            else if(count > 1500 & count <= 2000){
-                ListThread4.add(line);
+            else if(count > 3*countList & count <= 4*countList){
+                ListThread4.add(ListAll.get(i));
             }
-            else if(count > 2000 & count <= 2500){
-                ListThread5.add(line);
+            else if(count > 4*countList & count <= 5*countList){
+                ListThread5.add(ListAll.get(i));
             }
-            else if(count > 2500 & count <= 3000){
-                ListThread6.add(line);
+            else if(count > 5*countList & count <= 6*countList){
+                ListThread6.add(ListAll.get(i));
             }
-            else if(count > 3000 & count <= 3500){
-                ListThread7.add(line);
+            else if(count > 6*countList & count <= 7*countList){
+                ListThread7.add(ListAll.get(i));
             }
-            else if(count > 3500 & count <= 4000){
-                ListThread8.add(line);
+            else if(count > 7*countList & count <= 8*countList){
+                ListThread8.add(ListAll.get(i));
             }
-            else if(count > 4000 & count <= 4500){
-                ListThread9.add(line);
+            else if(count > 8*countList & count <= 9*countList){
+                ListThread9.add(ListAll.get(i));
             }
-            else if(count > 4500 & count <= 5000){
-                ListThread10.add(line);
+            else if(count > 9*countList & count <= 10*countList){
+                ListThread10.add(ListAll.get(i));
             }
-            else if(count > 5000 & count <=5500) {
-                ListThread11.add(line);
+            else if(count > 10*countList & count <=11*countList) {
+                ListThread11.add(ListAll.get(i));
             }
-            else if(count > 5500 & count <= 6000){
-                ListThread12.add(line);
+            else if(count > 11*countList & count <= 12*countList){
+                ListThread12.add(ListAll.get(i));
             }
-            else if(count > 6000 & count <= 6500){
-                ListThread13.add(line);
+            else if(count > 12*countList & count <= 13*countList){
+                ListThread13.add(ListAll.get(i));
             }
-            else if(count > 6500 & count <= 7000){
-                ListThread14.add(line);
+            else if(count > 13*countList & count <= 14*countList){
+                ListThread14.add(ListAll.get(i));
             }
-            else if(count > 7000 & count <= 7500){
-                ListThread15.add(line);
+            else if(count > 14*countList & count <= 15*countList){
+                ListThread15.add(ListAll.get(i));
             }
-            else if(count > 7500 & count <= 8000){
-                ListThread16.add(line);
+            else if(count > 15*countList & count <= 16*countList){
+                ListThread16.add(ListAll.get(i));
             }
-            else if(count > 8000 & count <= 8500){
-                ListThread17.add(line);
+            else if(count > 16*countList & count <= 17*countList){
+                ListThread17.add(ListAll.get(i));
             }
-            else if(count > 8500 & count <= 9000){
-                ListThread18.add(line);
+            else if(count > 17*countList & count <= 18*countList){
+                ListThread18.add(ListAll.get(i));
             }
-            else if(count > 9000 & count <= 9500){
-                ListThread19.add(line);
+            else if(count > 18*countList & count <= 19*countList){
+                ListThread19.add(ListAll.get(i));
             }
-            else if(count > 9500 & count <= 10000){
-                ListThread20.add(line);
+            else if(count > 19*countList & count <= lenList){
+                ListThread20.add(ListAll.get(i));
             }
-
-
-            line = reader.readLine();
         }
         //Конец разделения
 
@@ -193,7 +196,7 @@ class PeopleQueue<filePath> extends Thread {
 
         for (int i = 0; i < names[0].size(); i++) { // Вывод в цикле с паузой 0.5 сек очередного сотрудника
             //Get Request
-            System.out.println(names[0].get(i));
+
             String name = names[0].get(i).toString();
             String url1 = "https://www.instagram.com/web/search/topsearch/?context=blended&query=";
             String url2 = "&rank_token=0.6342094475169566&include_reel=true";
@@ -205,16 +208,23 @@ class PeopleQueue<filePath> extends Thread {
                 e.printStackTrace();
             }
             HttpURLConnection connection = null;
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("94.41.104.125",8080));
+
             try {
                 connection = (HttpURLConnection) obj.openConnection();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+
             try {
                 connection.setRequestMethod("GET");
             } catch (ProtocolException e) {
                 e.printStackTrace();
             }
+
+
+
             BufferedReader in = null;
             try {
                 in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -237,7 +247,7 @@ class PeopleQueue<filePath> extends Thread {
                 e.printStackTrace();
             }
             //End Get Request
-
+            System.out.println(response);
             //JSON
             JSONParser parser = new JSONParser();
             Object obj1 = null;
@@ -257,6 +267,7 @@ class PeopleQueue<filePath> extends Thread {
                     sleep(1); // Задержка в 0.5 сек
                 } catch (Exception e) {}
                 if (name11.equals(name)){
+                    System.out.println(names[0].get(i) + " - Работает!");
                     WorkedList1.add(name11);
                     Flag = true;
                 }
@@ -267,6 +278,7 @@ class PeopleQueue<filePath> extends Thread {
             }
             if (Flag == false){
                 UnWorkedList1.add(name);
+                System.out.println(names[0].get(i) + " - Не работает!");
             }
             try {
                 sleep(1); // Задержка в 0.5 сек

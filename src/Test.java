@@ -14,20 +14,18 @@ import java.util.List;
 public class Test {
 
     public static void main(String[] args) throws Exception {
+        //Create and clear new txt files
         FileWriter writer = new FileWriter("WorkedList.txt");
         writer.write("");
         writer.close();
         FileWriter writer2 = new FileWriter("UnWorkedList.txt");
         writer2.write("");
         writer2.close();
-        Date currentTime = new Date();   // берем дату до метода.
-        System.out.println(currentTime);
+        //End Create
 
         //Read File
         File file = new File("notes3.txt");
-
         ArrayList<String> ListAll = new ArrayList<>();
-
         ArrayList<String> ListThread1 = new ArrayList<>();
         ArrayList<String> ListThread2 = new ArrayList<>();
         ArrayList<String> ListThread3 = new ArrayList<>();
@@ -56,10 +54,9 @@ public class Test {
             line = reader.readLine();
         }
         int lenList = ListAll.size();
-        System.out.println(lenList);
+        System.out.println("Всего аккаунтов: " + lenList);
 
-        //Разделение файла на 2 списка
-
+        //Разделение файла на 20 списков
         int countList1 = lenList % 20;
         int countList = (lenList - countList1) / 20;
         System.out.println(countList);
@@ -149,32 +146,28 @@ public class Test {
         PeopleQueue queue18 = new PeopleQueue(ListThread18);
         PeopleQueue queue19 = new PeopleQueue(ListThread19);
         PeopleQueue queue20 = new PeopleQueue(ListThread20);
-        queue1.start(); //Запускаем одну очередь (дочерний поток)
-        queue2.start(); //Запускаем вторую (дочерний поток)
-        queue3.start(); //Запускаем одну очередь (дочерний поток)
-        queue4.start(); //Запускаем вторую (дочерний поток)
-        queue5.start(); //Запускаем одну очередь (дочерний поток)
-        queue6.start(); //Запускаем вторую (дочерний поток)
-        queue7.start(); //Запускаем одну очередь (дочерний поток)
-        queue8.start(); //Запускаем вторую (дочерний поток)
-        queue9.start(); //Запускаем одну очередь (дочерний поток)
-        queue10.start(); //Запускаем вторую (дочерний поток)
-        queue11.start(); //Запускаем одну очередь (дочерний поток)
-        queue12.start(); //Запускаем вторую (дочерний поток)
-        queue13.start(); //Запускаем одну очередь (дочерний поток)
-        queue14.start(); //Запускаем вторую (дочерний поток)
-        queue15.start(); //Запускаем одну очередь (дочерний поток)
-        queue16.start(); //Запускаем вторую (дочерний поток)
-        queue17.start(); //Запускаем одну очередь (дочерний поток)
-        queue18.start(); //Запускаем вторую (дочерний поток)
-        queue19.start(); //Запускаем одну очередь (дочерний поток)
-        queue20.start(); //Запускаем вторую (дочерний поток)
-        Date newTime = new Date();     // берем время после метода.
 
-        long long1 = currentTime.getTime() - newTime.getTime();
-        System.out.println(long1);
-        System.out.println(newTime);
-
+        // Start Threads
+        queue1.start();
+        queue2.start();
+        queue3.start();
+        queue4.start();
+        queue5.start();
+        queue6.start();
+        queue7.start();
+        queue8.start();
+        queue9.start();
+        queue10.start();
+        queue11.start();
+        queue12.start();
+        queue13.start();
+        queue14.start();
+        queue15.start();
+        queue16.start();
+        queue17.start();
+        queue18.start();
+        queue19.start();
+        queue20.start();
     }
 
 }
@@ -194,7 +187,7 @@ class PeopleQueue<filePath> extends Thread {
     @Override
     public void run(){ // Этот метод будет вызван при старте потока
 
-        for (int i = 0; i < names[0].size(); i++) { // Вывод в цикле с паузой 0.5 сек очередного сотрудника
+        for (int i = 0; i < names[0].size(); i++) {
             //Get Request
 
             String name = names[0].get(i).toString();
@@ -208,7 +201,7 @@ class PeopleQueue<filePath> extends Thread {
                 e.printStackTrace();
             }
             HttpURLConnection connection = null;
-            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("94.41.104.125",8080));
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("94.41.104.125",8080)); //Proxy settings
 
             try {
                 connection = (HttpURLConnection) obj.openConnection();
@@ -316,8 +309,6 @@ class PeopleQueue<filePath> extends Thread {
             }
 
         }
-
-
         }
 
     }

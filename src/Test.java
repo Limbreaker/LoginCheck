@@ -1,14 +1,6 @@
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import java.io.*;
-import java.net.*;
 import java.util.ArrayList;
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Date;
-import java.util.List;
 
 
 public class Test {
@@ -22,7 +14,7 @@ public class Test {
         writer2.write("");
         writer2.close();
         //End Create
-
+        int count = 0;
         //Read File
         File file = new File("notes3.txt");
         ArrayList<String> ListAll = new ArrayList<>();
@@ -60,7 +52,7 @@ public class Test {
         int countList1 = lenList % 20;
         int countList = (lenList - countList1) / 20;
         System.out.println(countList);
-        int count = 0;
+        int count1 = 0;
         for (int i = 0; i < lenList; i++){
             count += 1;
             if(count <= countList) {
@@ -126,26 +118,26 @@ public class Test {
         }
         //Конец разделения
 
-        PeopleQueue queue1 = new PeopleQueue(ListThread1);
-        PeopleQueue queue2 = new PeopleQueue(ListThread2);
-        PeopleQueue queue3 = new PeopleQueue(ListThread3);
-        PeopleQueue queue4 = new PeopleQueue(ListThread4);
-        PeopleQueue queue5 = new PeopleQueue(ListThread5);
-        PeopleQueue queue6 = new PeopleQueue(ListThread6);
-        PeopleQueue queue7 = new PeopleQueue(ListThread7);
-        PeopleQueue queue8 = new PeopleQueue(ListThread8);
-        PeopleQueue queue9 = new PeopleQueue(ListThread9);
-        PeopleQueue queue10 = new PeopleQueue(ListThread10);
-        PeopleQueue queue11 = new PeopleQueue(ListThread11);
-        PeopleQueue queue12 = new PeopleQueue(ListThread12);
-        PeopleQueue queue13 = new PeopleQueue(ListThread13);
-        PeopleQueue queue14 = new PeopleQueue(ListThread14);
-        PeopleQueue queue15 = new PeopleQueue(ListThread15);
-        PeopleQueue queue16 = new PeopleQueue(ListThread16);
-        PeopleQueue queue17 = new PeopleQueue(ListThread17);
-        PeopleQueue queue18 = new PeopleQueue(ListThread18);
-        PeopleQueue queue19 = new PeopleQueue(ListThread19);
-        PeopleQueue queue20 = new PeopleQueue(ListThread20);
+        NewThread queue1 = new NewThread(ListThread1);
+        NewThread queue2 = new NewThread(ListThread2);
+        NewThread queue3 = new NewThread(ListThread3);
+        NewThread queue4 = new NewThread(ListThread4);
+        NewThread queue5 = new NewThread(ListThread5);
+        NewThread queue6 = new NewThread(ListThread6);
+        NewThread queue7 = new NewThread(ListThread7);
+        NewThread queue8 = new NewThread(ListThread8);
+        NewThread queue9 = new NewThread(ListThread9);
+        NewThread queue10 = new NewThread(ListThread10);
+        NewThread queue11 = new NewThread(ListThread11);
+        NewThread queue12 = new NewThread(ListThread12);
+        NewThread queue13 = new NewThread(ListThread13);
+        NewThread queue14 = new NewThread(ListThread14);
+        NewThread queue15 = new NewThread(ListThread15);
+        NewThread queue16 = new NewThread(ListThread16);
+        NewThread queue17 = new NewThread(ListThread17);
+        NewThread queue18 = new NewThread(ListThread18);
+        NewThread queue19 = new NewThread(ListThread19);
+        NewThread queue20 = new NewThread(ListThread20);
 
         // Start Threads
         queue1.start();
@@ -173,144 +165,6 @@ public class Test {
 }
 
 
-class PeopleQueue<filePath> extends Thread {
-    ArrayList<String> UnWorkedList1 = new ArrayList<>();
-    ArrayList<String> WorkedList1 = new ArrayList<>();
 
-    private ArrayList[] names;
-    PeopleQueue(ArrayList... names) {
-        this.names = names;
-
-    }
-
-
-    @Override
-    public void run(){ // Этот метод будет вызван при старте потока
-
-        for (int i = 0; i < names[0].size(); i++) {
-            //Get Request
-
-            String name = names[0].get(i).toString();
-            String url1 = "https://www.instagram.com/web/search/topsearch/?context=blended&query=";
-            String url2 = "&rank_token=0.6342094475169566&include_reel=true";
-            String url = url1 + name + url2;
-            URL obj = null;
-            try {
-                obj = new URL(url);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-            HttpURLConnection connection = null;
-            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("94.41.104.125",8080)); //Proxy settings
-
-            try {
-                connection = (HttpURLConnection) obj.openConnection();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-            try {
-                connection.setRequestMethod("GET");
-            } catch (ProtocolException e) {
-                e.printStackTrace();
-            }
-
-
-
-            BufferedReader in = null;
-            try {
-                in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            String inputLine = null;
-            StringBuffer response = new StringBuffer();
-            while (true) {
-                try {
-                    if (!((inputLine = in.readLine()) != null)) break;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                response.append(inputLine);
-            }
-            try {
-                in.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            //End Get Request
-            System.out.println(response);
-            //JSON
-            JSONParser parser = new JSONParser();
-            Object obj1 = null;
-            try {
-                obj1 = parser.parse(response.toString());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            JSONObject jsonObj = (JSONObject) obj1;
-            JSONArray msg = (JSONArray) jsonObj.get("users");
-            boolean Flag = false;
-            for (int i1 = 0; i1 < msg.size(); i1++){
-                JSONObject jsonObj2 = (JSONObject) msg.get(i1);
-                JSONObject jsonObj3 = (JSONObject) jsonObj2.get("user");
-                String name11 = jsonObj3.get("username").toString();
-                try {
-                    sleep(1); // Задержка в 0.5 сек
-                } catch (Exception e) {}
-                if (name11.equals(name)){
-                    System.out.println(names[0].get(i) + " - Работает!");
-                    WorkedList1.add(name11);
-                    Flag = true;
-                }
-                try {
-                    sleep(1); // Задержка в 0.5 сек
-                } catch (Exception e) {}
-
-            }
-            if (Flag == false){
-                UnWorkedList1.add(name);
-                System.out.println(names[0].get(i) + " - Не работает!");
-            }
-            try {
-                sleep(1); // Задержка в 0.5 сек
-            } catch (Exception e) {}
-            //JSON End
-        }
-        //End Read File
-        String filePath = "WorkedList.txt";
-
-        for (String str: WorkedList1
-             ) {
-            try {
-                FileWriter writer = new FileWriter(filePath, true);
-                BufferedWriter bufferWriter = new BufferedWriter(writer);
-                bufferWriter.write(str+"\n");
-                bufferWriter.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-        String filePath2 = "UnWorkedList.txt";
-
-        for (String str: UnWorkedList1
-        ) {
-            try {
-                FileWriter writer2 = new FileWriter(filePath2, true);
-                BufferedWriter bufferWriter = new BufferedWriter(writer2);
-                bufferWriter.write(str+"\n");
-                bufferWriter.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-        }
-
-    }
 
 
